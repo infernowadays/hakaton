@@ -11,10 +11,10 @@ Server part of the website by:
 Web client: http://findfound.me/
 
 ## Built with
-- [Django] (https://www.djangoproject.com/) - a free framework for web applications in Python
-- [DRF] (https://www.django-rest-framework.org/) - a library that works with standard Django models to create flexible and powerful API
-- [SuperJob Api] (https://api.superjob.ru/) - open source of the organization for the search and placement of vacancies
-- [Telegram Bot Api] (https://core.telegram.org/bots/api) - api from the Telegram messenger to create chat bots
+- [Django](https://www.djangoproject.com/) - a free framework for web applications in Python
+- [DRF](https://www.django-rest-framework.org/) - a library that works with standard Django models to create flexible and powerful API
+- [SuperJob Api](https://api.superjob.ru/) - open source of the organization for the search and placement of vacancies
+- [Telegram Bot Api](https://core.telegram.org/bots/api) - api from the Telegram messenger to create chat bots
 
 ## Installation
 <i> For questions: [@infernowadays](https://t.me/infernowadays "@infernowadays") </i>
