@@ -14,6 +14,9 @@ from .models import UserProfile
 from .enums import Type
 from company.serializers import CompanySerializer
 from company.models import Company
+from form.models import Form
+import json
+from form.serializers import FormSerializer
 
 
 class SignUpView(APIView):
@@ -67,9 +70,36 @@ class LoginView(APIView):
                 return Response({'error': 'user does not have any companies'}, status=status.HTTP_404_NOT_FOUND)
             serializer = CompanySerializer(company[0])
 
+        elif self.request.user.type == Type.ADMINISTRATOR.value:
+            company = Company.objects.filter(hr=self.request.user)
+            if not company:
+                return Response({'error': 'user does not have any companies'}, status=status.HTTP_404_NOT_FOUND)
+            serializer = CompanySerializer(company, many=True)
+
         elif self.request.user.type == Type.STUDENT.value:
             serializer = UserProfileSerializer(self.request.user)
 
+        serializer_data = serializer.data
+        form = Form.objects.filter(student=self.request.user).order_by('-id')
+        if not form:
+            serializer_data['form'] = {}
+        else:
+            serializer_data['form'] = FormSerializer(form[0]).data
+
+        return Response(serializer_data, status=status.HTTP_200_OK)
+
+
+class ProfileListView(APIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
+    def get(self, request):
+        if self.request.user.type == Type.ADMINISTRATOR.value:
+            return Response(UserProfileShortSerializer(UserProfile.objects.all(), many=True).data,
+                            status=status.HTTP_200_OK)
+
+        students = UserProfile.objects.filter(type=Type.STUDENT.value)
+        serializer = UserProfileSerializer(students, many=Type)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -87,4 +117,11 @@ class ProfileDetailView(APIView):
     def get(self, request, pk):
         user_profile = self.get_object(pk)
         serializer = UserProfileSerializer(user_profile)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer_data = serializer.data
+
+        form = Form.objects.filter(student_id=pk).order_by('-id')
+        if not form:
+            serializer_data['form'] = {}
+        else:
+            serializer_data['form'] = FormSerializer(instance=form[0]).data
+        return Response(serializer_data, status=status.HTTP_200_OK)

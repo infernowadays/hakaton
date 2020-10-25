@@ -1,8 +1,9 @@
 from django.db import models
-from .enums import *
+
 from company.models import Company
-from token_auth.models import UserProfile
 from core.models import Specialization
+from token_auth.models import UserProfile
+from .enums import *
 
 
 class Skill(models.Model):
@@ -13,8 +14,8 @@ class Skill(models.Model):
 
 
 class Course(models.Model):
-    name = models.CharField(max_length=256, null=False)
-    link = models.CharField(max_length=256, null=False)
+    name = models.CharField(max_length=256, null=False, blank=True)
+    link = models.CharField(max_length=256, null=False, blank=True)
 
     class Meta:
         db_table = 'course'
@@ -34,8 +35,11 @@ class Vacancy(models.Model):
     is_active = models.BooleanField(null=False, blank=False, default=True)
 
     skills = models.ManyToManyField(Skill, through='VacancySkills')
-    min_points = models.IntegerField(null=False, blank=True)
+    min_points = models.IntegerField(null=True, blank=True, default=0)
     specializations = models.ManyToManyField(Specialization, through='VacancySpecializations')
+
+    external = models.BooleanField(null=False, blank=False, default=False)
+    link = models.CharField(max_length=256, null=True, blank=True, default='')
 
     courses = models.ManyToManyField(Course, through='VacancyCourses')
 

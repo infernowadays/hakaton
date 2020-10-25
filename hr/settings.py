@@ -11,8 +11,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 import os
-import dj_database_url
 from pathlib import Path
+
+import dj_database_url
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -47,6 +48,8 @@ INSTALLED_APPS = [
     'vacancy',
     'company',
     'form',
+    'telegram_bot',
+    'metrics',
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -149,3 +152,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'project_name/static')
                     ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+SUPER_JOB_SECRET_KEY = config('SUPER_JOB_SECRET_KEY')
+TELEGRAM_BOT_ACCESS_TOKEN = config('TELEGRAM_BOT_ACCESS_TOKEN')
