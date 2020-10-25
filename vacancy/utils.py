@@ -1,13 +1,13 @@
-from django.db.models import Q
-from vacancy.models import Skill
-from .constants import *
-from core.models import Specialization
-from .models import VacancySkills
 import requests
 from django.conf import settings
-from vacancy.models import Vacancy
-import json
+from django.db.models import Q
+
 from company.models import Company
+from core.models import Specialization
+from vacancy.models import Skill
+from vacancy.models import Vacancy
+from .constants import *
+from .models import VacancySkills
 
 
 def filter_by_skills(list_skills):
@@ -26,6 +26,27 @@ def filter_by_specializations(list_specializations):
         return Q()
 
 
+def filter_by_text(text):
+    if text:
+        return Q(Q(name__icontains=text) | Q(short_description__icontains=text) | Q(description__icontains=text))
+    else:
+        return Q()
+
+
+def filter_by_experience_type(experience_type):
+    if experience_type:
+        return Q(experience_type=experience_type)
+    else:
+        return Q()
+
+
+def filter_by_type_of_work(type_of_work):
+    if type_of_work:
+        return Q(type_of_work=type_of_work)
+    else:
+        return Q()
+
+
 def setup_vacancy_display(vacancies):
     for vacancy in vacancies:
         vacancy['experience_type'] = {'id': vacancy.get('experience_type'),
@@ -36,6 +57,19 @@ def setup_vacancy_display(vacancies):
 
         vacancy['schedule_type'] = {'id': vacancy.get('schedule_type'),
                                     'text': Constants().get_schedule_types(vacancy.get('schedule_type'))}
+
+
+def setup_single_vacancy_display(vacancy):
+    vacancy['experience_type'] = {'id': vacancy.get('experience_type'),
+                                  'text': Constants().get_employment_types(vacancy.get('experience_type'))}
+
+    vacancy['employment_type'] = {'id': vacancy.get('employment_type'),
+                                  'text': Constants().get_experience_types(vacancy.get('employment_type'))}
+
+    vacancy['schedule_type'] = {'id': vacancy.get('schedule_type'),
+                                'text': Constants().get_schedule_types(vacancy.get('schedule_type'))}
+
+    return vacancy
 
 
 def create_skills(skills, vacancy):
@@ -74,7 +108,7 @@ def get_super_job_vacancies(keywords, type_of_work, experience):
     # , 'type_of_work': type_of_work, 'experience': experience
     headers = {'Content-Type': 'application/json', 'X-Api-App-Id': settings.SUPER_JOB_SECRET_KEY}
     payload = {'period': period, 'town': town, 'order_field': order_field, 'order_direction': order_direction,
-               'count': count, 'keywords': keywords}
+               'count': count, 'keywords': keywords, 'type_of_work': type_of_work, 'experience': experience, }
 
     response = requests.get(app_url, headers=headers, params=payload)
     vacancies = list([])
