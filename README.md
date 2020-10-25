@@ -29,9 +29,9 @@ Web client: http://findfound.me/
 
 ## Todo
 - [ ] Electronic document management system
-- [ ] Increasing the number of useful metrics
+- [X] Useful metrics
 - [ ] Atomicity of existence
 - [ ] Distribution to the largest universities in the Russian Federation
-- [ ] Dorldwide distribution
+- [ ] Worldwide distribution
 - [ ] Spread across the galaxy
 - [X] And many more interesting things!
