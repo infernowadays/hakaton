@@ -17,7 +17,7 @@ Web client: http://findfound.me/
 - [Telegram Bot Api] (https://core.telegram.org/bots/api) - api from the Telegram messenger to create chat bots
 
 ## Installation
-<i> For questions: [@infernowadays] (https://t.me/infernowadays "@infernowadays") </i>
+<i> For questions: [@infernowadays](https://t.me/infernowadays "@infernowadays") </i>
 - Install postgres and configure in
 - `backend/settings.py`
 - Open a command line window and go to the project's directory.
@@ -34,4 +34,4 @@ Web client: http://findfound.me/
 - [ ] Distribution to the largest universities in the Russian Federation
 - [ ] Dorldwide distribution
 - [ ] Spread across the galaxy
-- [ ] And many more interesting things!
+- [X] And many more interesting things!
